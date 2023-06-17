@@ -12,5 +12,8 @@ CREATE TABLE IF NOT EXISTS user
      first_name VARCHAR(50) NOT NULL, 
      last_name  VARCHAR(50) NOT NULL, 
      email      VARCHAR(100) UNIQUE NOT NULL, 
-     age        INT(11) DEFAULT 0 
+     age        INT(11) DEFAULT 0,
+     order_number INT(11) DEFAULT 0,
+     order_details VARCHAR (100) NOT NULL,
+     delivery_address VARCHAR (100) NOT NULL,   
   ); 
