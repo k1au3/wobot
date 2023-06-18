@@ -28,10 +28,10 @@ exports.createUserSchema = [
         .isEmail()
         .withMessage('Must be a valid email')
         .normalizeEmail(),
-    body('role')
-        .optional()
-        .isIn([Role.Admin, Role.SuperUser])
-        .withMessage('Invalid Role type'),
+    // body('role')
+    //     .optional()
+    //     .isIn([Role.Admin, Role.SuperUser])
+    //     .withMessage('Invalid Role type'),
     body('password')
         .exists()
         .withMessage('Password is required')
@@ -72,10 +72,10 @@ exports.updateUserSchema = [
         .isEmail()
         .withMessage('Must be a valid email')
         .normalizeEmail(),
-    body('role')
-        .optional()
-        .isIn([Role.Admin, Role.SuperUser])
-        .withMessage('Invalid Role type'),
+    // body('role')
+    //     .optional()
+    //     .isIn([Role.Admin, Role.SuperUser])
+    //     .withMessage('Invalid Role type'),
     body('password')
         .optional()
         .notEmpty()
@@ -104,6 +104,39 @@ exports.updateUserSchema = [
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
+];
+
+exports.createOrderSchema = [
+    body('order_name')
+        .isAlpha()
+        .withMessage('order_name is required')
+        .isLength({ min: 3 })
+        .withMessage('Must be at least 3 chars long'),
+    body('order_category')
+        .isAlpha()
+        .withMessage('Must be only alphabetical chars')
+        .isLength({ min: 3 })
+        .withMessage('Must be at least 3 chars long'),
+    body('order_rating')
+        .optional()
+        .isNumeric()
+        .withMessage('Must be a number'),
+    body('order_img')
+        .optional()
+        .isLength({ min: 3 })
+        .withMessage('Must be at least 3 chars long'),
+    body('order_price')
+        .optional()
+        .isNumeric()
+        .withMessage('Must be a number'),
+    body('discount_rate')
+        .optional()
+        .isNumeric()
+        .withMessage('Must be a number'),
+    body('discount_price')
+        .optional()
+        .isNumeric()
+        .withMessage('Must be a number')
 ];
 
 exports.validateLogin = [
