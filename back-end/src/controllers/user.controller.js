@@ -54,16 +54,73 @@ class UserController {
 
     createUser = async (req, res, next) => {
         this.checkValidation(req);
-
+        
         await this.hashPassword(req);
-
+        
         const result = await UserModel.create(req.body);
 
         if (!result) {
             throw new HttpException(500, 'Something went wrong');
         }
+        console.log("Part 3");
 
         res.status(201).send('User was created!');
+    };
+
+    createOrder = async (req, res, next) => {
+        this.checkValidation(req);
+        
+        
+        const result = await UserModel.addOrder(req.body);
+    
+        if (!result) {
+            throw new HttpException(500, 'Something went wrong');
+        }
+    
+        res.status(201).send('User was created!');
+    };
+
+    getAllOrders = async (req, res, next) => {
+        let userList = await UserModel.find();
+        if (!userList.length) {
+            throw new HttpException(404, 'Users not found');
+        }
+
+        userList = userList.map(user => {
+            const { password, ...userWithoutPassword } = user;
+            return userWithoutPassword;
+        });
+
+        res.send(userList);
+    };
+
+    getOrderById = async (req, res, next) => {
+        const user = await UserModel.findOne({ id: req.params.id });
+        if (!user) {
+            throw new HttpException(404, 'User not found');
+        }
+
+        const { password, ...userWithoutPassword } = user;
+
+        res.send(userWithoutPassword);
+    };
+
+    deleteOrder = async (req, res, next) => {
+        const result = await UserModel.delete(req.params.id);
+        if (!result) {
+            throw new HttpException(404, 'User not found');
+        }
+        res.send('User has been deleted');
+    };
+
+    deleteAllOrders = async (req, res, next) => {
+        let result = await UserModel.find();
+        // const result = await UserModel.delete(req.params.id);
+        if (!result) {
+            throw new HttpException(404, 'User not found');
+        }
+        result = await UserModel.deleteAllyea();
+        res.send('All orders deleted');
     };
 
     updateUser = async (req, res, next) => {

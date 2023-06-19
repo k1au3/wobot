@@ -35,6 +35,10 @@ class DBConnection {
     }
 
     query = async (sql, values) => {
+        console.log('Query args >>>>', {
+            sql: sql,
+            values: {values}
+        });
         return new Promise((resolve, reject) => {
             const callback = (error, result) => {
                 if (error) {
@@ -53,6 +57,21 @@ class DBConnection {
             throw err;
         });
     }
+
+    execute = async(query, values) => {
+        return
+    }
+
+    // execute(query, values, (err, results) => {
+    //     connection.release();
+    
+    //     if (err) {
+    //       console.error('Error executing statement:', err);
+    //       return;
+    //     }
+    
+    //     console.log('Statement executed successfully!');
+    //   });
 }
 
 // like ENUM
