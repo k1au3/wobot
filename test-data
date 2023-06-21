@@ -1,7 +1,6 @@
 [
     {
         id: 1,
-        url: hikingTr,
         title: 'Mountain Hiking Tour',
         sub: 'Hiking Tour | Stoke on Trent',
         price: 'ksh 6,999',
@@ -9,7 +8,6 @@
     },
     {
         id: 2,
-        url: trainTr,
         title: 'Train Tour Skyline',
         sub: 'Train Ride | Stoke on Trent',
         price: 'ksh 2,599',
@@ -17,7 +15,6 @@
     },
     {
         id: 3,
-        url: forestTr,
         title: 'A Trek in The Woods',
         sub: 'Hiking Tour | Trekking',
         price: 'ksh 5,900',
@@ -25,7 +22,6 @@
     },
     {
         id: 4,
-        url: cultureTr,
         title: 'Cultural Experience Tour',
         sub: 'Social Tour | Culture',
         price: 'ksh 16,099',
@@ -33,7 +29,6 @@
     },
     {
         id: 5,
-        url: cuisineTr,
         title: 'Cuisine Tasting Tour',
         sub: 'Cuisine | Food & Culture',
         price: 'ksh 6,999',
@@ -41,7 +36,6 @@
     },
     {
         id: 6,
-        url: nightTr,
         title: 'Nightlife Experience',
         sub: 'Social Tour | Drinks & Music',
         price: 'ksh 3,000',
