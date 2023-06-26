@@ -3,23 +3,9 @@ const Role = require('../../utils/userRoles.utils');
 
 
 exports.createUserSchema = [
-    body('username')
+    body('name')
         .exists()
         .withMessage('username is required')
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
-    body('first_name')
-        .exists()
-        .withMessage('Your first name is required')
-        .isAlpha()
-        .withMessage('Must be only alphabetical chars')
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
-    body('last_name')
-        .exists()
-        .withMessage('Your last name is required')
-        .isAlpha()
-        .withMessage('Must be only alphabetical chars')
         .isLength({ min: 3 })
         .withMessage('Must be at least 3 chars long'),
     body('email')
@@ -28,10 +14,6 @@ exports.createUserSchema = [
         .isEmail()
         .withMessage('Must be a valid email')
         .normalizeEmail(),
-    // body('role')
-    //     .optional()
-    //     .isIn([Role.Admin, Role.SuperUser])
-    //     .withMessage('Invalid Role type'),
     body('password')
         .exists()
         .withMessage('Password is required')
@@ -40,31 +22,11 @@ exports.createUserSchema = [
         .withMessage('Password must contain at least 6 characters')
         .isLength({ max: 10 })
         .withMessage('Password can contain max 10 characters'),
-    body('confirm_password')
-        .exists()
-        .custom((value, { req }) => value === req.body.password)
-        .withMessage('confirm_password field must have the same value as the password field'),
-    body('age')
-        .optional()
-        .isNumeric()
-        .withMessage('Must be a number')
 ];
 
 exports.updateUserSchema = [
-    body('username')
+    body('name')
         .optional()
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
-    body('first_name')
-        .optional()
-        .isAlpha()
-        .withMessage('Must be only alphabetical chars')
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
-    body('last_name')
-        .optional()
-        .isAlpha()
-        .withMessage('Must be only alphabetical chars')
         .isLength({ min: 3 })
         .withMessage('Must be at least 3 chars long'),
     body('email')
@@ -72,71 +34,17 @@ exports.updateUserSchema = [
         .isEmail()
         .withMessage('Must be a valid email')
         .normalizeEmail(),
-    // body('role')
-    //     .optional()
-    //     .isIn([Role.Admin, Role.SuperUser])
-    //     .withMessage('Invalid Role type'),
-    body('password')
-        .optional()
-        .notEmpty()
-        .isLength({ min: 6 })
-        .withMessage('Password must contain at least 6 characters')
-        .isLength({ max: 10 })
-        .withMessage('Password can contain max 10 characters')
-        .custom((value, { req }) => !!req.body.confirm_password)
-        .withMessage('Please confirm your password'),
-    body('confirm_password')
-        .optional()
-        .custom((value, { req }) => value === req.body.password)
-        .withMessage('confirm_password field must have the same value as the password field'),
-    body('age')
-        .optional()
-        .isNumeric()
-        .withMessage('Must be a number'),
-    body()
+     body()
         .custom(value => {
             return !!Object.keys(value).length;
         })
         .withMessage('Please provide required field to update')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['username', 'password', 'confirm_password', 'email', 'role', 'first_name', 'last_name', 'age'];
+            const allowUpdates = [ 'name','password' , 'email'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
-];
-
-exports.createOrderSchema = [
-    body('order_name')
-        .isAlpha()
-        .withMessage('order_name is required')
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
-    body('order_category')
-        .isAlpha()
-        .withMessage('Must be only alphabetical chars')
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
-    body('order_rating')
-        .optional()
-        .isNumeric()
-        .withMessage('Must be a number'),
-    body('order_img')
-        .optional()
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
-    body('order_price')
-        .optional()
-        .isNumeric()
-        .withMessage('Must be a number'),
-    body('discount_rate')
-        .optional()
-        .isNumeric()
-        .withMessage('Must be a number'),
-    body('discount_price')
-        .optional()
-        .isNumeric()
-        .withMessage('Must be a number')
 ];
 
 exports.validateLogin = [

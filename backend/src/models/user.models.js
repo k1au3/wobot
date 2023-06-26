@@ -1,12 +1,10 @@
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
-
-class OrderModel{
-
-    ordersTable = 'order_tbl';
+class UserModel {
+    tableName = 'user';
 
     find = async (params = {}) => {
-        let sql = `SELECT * FROM ${this.ordersTable}`;
+        let sql = `SELECT * FROM ${this.tableName}`;
 
         if (!Object.keys(params).length) {
             return await query(sql);
@@ -21,7 +19,7 @@ class OrderModel{
     findOne = async (params) => {
         const { columnSet, values } = multipleColumnSet(params)
 
-        const sql = `SELECT * FROM ${this.ordersTable}
+        const sql = `SELECT * FROM ${this.tableName}
         WHERE ${columnSet}`;
 
         const result = await query(sql, [...values]);
@@ -30,22 +28,28 @@ class OrderModel{
         return result[0];
     }
 
-    addOrder = async ({ order_name, order_category, order_rating, order_img, order_price, discount_rate, discount_price }) => {
-    
-        const sql = `INSERT INTO ${this.ordersTable}
-        (order_name, order_category, order_rating, order_img, order_price, discount_rate, discount_price) VALUES (?,?,?,?,?,?,?)`;
-        
-        const result = await query(sql, [order_name, order_category, order_rating, order_img, order_price, discount_rate, discount_price]);
-        
-        
+    create = async ({ name, password, email }) => {
+        const sql = `INSERT INTO ${this.tableName}
+        (name, password, email) VALUES (?,?,?)`;
+
+        const result = await query(sql, [name, password, email]);
         const affectedRows = result ? result.affectedRows : 0;
-        
+
         return affectedRows;
     }
 
+    update = async (params, id) => {
+        const { columnSet, values } = multipleColumnSet(params)
+
+        const sql = `UPDATE user SET ${columnSet} WHERE id = ?`;
+
+        const result = await query(sql, [...values, id]);
+
+        return result;
+    }
+
     delete = async (id) => {
-        // const sql = `DELETE FROM ${this.tableName}
-        const sql = `DELETE FROM ${this.ordersTable}
+        const sql = `DELETE FROM ${this.tableName}
         WHERE id = ?`;
         const result = await query(sql, [id]);
         const affectedRows = result ? result.affectedRows : 0;
@@ -54,4 +58,4 @@ class OrderModel{
     }
 }
 
-module.exports = new OrderModel;
+module.exports = new UserModel;

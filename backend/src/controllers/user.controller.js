@@ -1,4 +1,4 @@
-const UserModel = require('../models/user.model');
+iconst UserModel = require('../models/user.model');
 const HttpException = require('../utils/HttpException.utils');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
@@ -35,8 +35,8 @@ class UserController {
         res.send(userWithoutPassword);
     };
 
-    getUserByuserName = async (req, res, next) => {
-        const user = await UserModel.findOne({ username: req.params.username });
+    getUserByName = async (req, res, next) => {
+        const user = await UserModel.findOne({ username: req.params.name });
         if (!user) {
             throw new HttpException(404, 'User not found');
         }
@@ -54,15 +54,14 @@ class UserController {
 
     createUser = async (req, res, next) => {
         this.checkValidation(req);
-        
+
         await this.hashPassword(req);
-        
+
         const result = await UserModel.create(req.body);
 
         if (!result) {
             throw new HttpException(500, 'Something went wrong');
         }
-        console.log("Part 3");
 
         res.status(201).send('User was created!');
     };
@@ -72,7 +71,7 @@ class UserController {
 
         await this.hashPassword(req);
 
-        const { confirm_password, ...restOfUpdates } = req.body;
+        const { {/*confirm_password,*/} ...restOfUpdates } = req.body;
 
         // do the update query and get the result
         // it can be partial edit
@@ -129,7 +128,7 @@ class UserController {
     checkValidation = (req) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            throw new HttpException(400, 'Validation failed', errors);
+            throw new HttpException(400, 'Validation faild', errors);
         }
     }
 

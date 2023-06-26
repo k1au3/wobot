@@ -1,49 +1,27 @@
-const HttpException = require('../utils/HttpException.utils');
-const UserModel = require('../models/user.model');
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-dotenv.config();
+function errorMiddleware(error, req, res, next) {
+    let { status = 500, message, data } = error;
 
-const auth = (...roles) => {
-    return async function (req, res, next) {
-        try {
-            const authHeader = req.headers.authorization;
-            const bearer = 'Bearer ';
+    console.log(`[Error] ${error}`);
 
-            if (!authHeader || !authHeader.startsWith(bearer)) {
-                throw new HttpException(401, 'Access denied. No credentials sent!');
-            }
+    // If status code is 500 - change the message to Intrnal server error
+    message = status === 500 || !message ? 'Internal server error' : message;
 
-            const token = authHeader.replace(bearer, '');
-            const secretKey = process.env.SECRET_JWT || "";
-
-            // Verify Token
-            const decoded = jwt.verify(token, secretKey);
-            const user = await UserModel.findOne({ id: decoded.user_id });
-
-            if (!user) {
-                throw new HttpException(401, 'Authentication failed!');
-            }
-
-            // check if the current user is the owner user
-            const ownerAuthorized = req.params.id == user.id;
-
-            // if the current user is not the owner and
-            // if the user role don't have the permission to do this action.
-            // the user will get this error
-            if (!ownerAuthorized && roles.length && !roles.includes(user.role)) {
-                throw new HttpException(401, 'Unauthorized');
-            }
-
-            // if the user has permissions
-            req.currentUser = user;
-            next();
-
-        } catch (e) {
-            e.status = 401;
-            next(e);
-        }
+    error = {
+        type: 'error',
+        status,
+        message,
+        ...(data) && data
     }
+
+    res.status(status).send(error);
 }
 
-module.exports = auth;
+module.exports = errorMiddleware;
+/*
+{
+    type: 'error',
+    status: 404,
+    message: 'Not Found'
+    data: {...} // optional
+}
+*/

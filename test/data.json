@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "title": "Mountain Hiking Tour",
+        "sub": "Hiking Tour | Stoke on Trent",
+        "price": "ksh 6,999",
+        "rating": "4.7(150)"
+    },
+    {
+        "id": 2,
+        "title": "Train Tour Skyline",
+        "sub": "Train Ride | Stoke on Trent",
+        "price": "ksh 2,599",
+        "rating": "4.3(105)"
+    }
+]
